@@ -248,7 +248,7 @@ function showAnimal(a) {
       if (currentAudio && !currentAudio.paused) {
         currentAudio.pause();
       }
-    }, 2500);
+    }, 3000);
   });
 
   currentAudio.play().catch(e => console.log('Звук не найден'));
