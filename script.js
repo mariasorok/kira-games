@@ -80,58 +80,14 @@ const COLORS = [
   { name: 'pink',   hex: '#ec407a' }
 ];
 
-// Картинки для каждого цвета. 
-// Если картинка не найдется, покажется смайлик (fallback).
 const ITEMS_MAP = {
-  red: [
-    { file: 'apple.png', fallback: '🍎' },
-    { file: 'strawberry.png', fallback: '🍓' },
-    { file: 'tomato.png', fallback: '🍅' },
-    { file: 'car_red.png', fallback: '🚗' },
-    { file: 'ladybug.png', fallback: '🐞' }
-  ],
-  blue: [
-    { file: 'blueberry.png', fallback: '🫐' },
-    { file: 'whale.png', fallback: '🐳' },
-    { file: 'ball_blue.png', fallback: '🔵' },
-    { file: 'jeans.png', fallback: '👖' },
-    { file: 'heart_blue.png', fallback: '💙' }
-  ],
-  yellow: [
-    { file: 'banana.png', fallback: '🍌' },
-    { file: 'lemon.png', fallback: '🍋' },
-    { file: 'sunflower.png', fallback: '🌻' },
-    { file: 'cheese.png', fallback: '🧀' },
-    { file: 'chick.png', fallback: '🐥' }
-  ],
-  green: [
-    { file: 'apple_green.png', fallback: '🍏' },
-    { file: 'cucumber.png', fallback: '🥒' },
-    { file: 'frog.png', fallback: '🐸' },
-    { file: 'broccoli.png', fallback: '🥦' },
-    { file: 'tree.png', fallback: '🌳' }
-  ],
-  purple: [
-    { file: 'grapes.png', fallback: '🍇' },
-    { file: 'eggplant.png', fallback: '🍆' },
-    { file: 'umbrella.png', fallback: '☂️' },
-    { file: 'ball_purple.png', fallback: '🟣' },
-    { file: 'blackberry.png', fallback: '🫐' }
-  ],
-  orange: [
-    { file: 'orange.png', fallback: '🍊' },
-    { file: 'carrot.png', fallback: '🥕' },
-    { file: 'ball_orange.png', fallback: '🏀' },
-    { file: 'fox.png', fallback: '🦊' },
-    { file: 'pumpkin.png', fallback: '🎃' }
-  ],
-  pink: [
-    { file: 'pig.png', fallback: '🐷' },
-    { file: 'flamingo.png', fallback: '🦩' },
-    { file: 'tulip.png', fallback: '🌷' },
-    { file: 'candy.png', fallback: '🍬' },
-    { file: 'bow.png', fallback: '🎀' }
-  ]
+  red: ['apple.png', 'strawberry.png', 'tomato.png', 'car_red.png', 'ladybug.png'],
+  blue: ['blueberry.png', 'whale.png', 'ball_blue.png', 'jeans.png', 'heart_blue.png'],
+  yellow: ['banana.png', 'lemon.png', 'sunflower.png', 'cheese.png', 'chick.png'],
+  green: ['apple_green.png', 'cucumber.png', 'frog.png', 'broccoli.png', 'tree.png'],
+  purple: ['grapes.png', 'eggplant.png', 'umbrella.png', 'ball_purple.png', 'blackberry.png'],
+  orange: ['orange.png', 'carrot.png', 'ball_orange.png', 'fox.png', 'pumpkin.png'],
+  pink: ['pig.png', 'flamingo.png', 'tulip.png', 'candy.png', 'bow.png']
 };
 
 let currentColor = null;
@@ -144,52 +100,38 @@ function newColorRound() {
   isRoundEnding = false;
   itemsEl.innerHTML = '';
   
-  // Выбираем цвет, который не совпадает с предыдущим
   let availableColors = COLORS.filter(c => c.name !== lastColorName);
   currentColor = availableColors[Math.floor(Math.random() * availableColors.length)];
   lastColorName = currentColor.name;
   
   basketEl.style.background = currentColor.hex;
   
-  // Берем все 5 картинок этого цвета, перемешиваем и выбираем 3 правильных
   let correctItems = ITEMS_MAP[currentColor.name];
   let correctChoices = [...correctItems].sort(() => Math.random() - 0.5).slice(0, 3);
   
-  // Берем неправильные цвета
   let otherColors = COLORS.filter(c => c.name !== currentColor.name);
   let wrongChoices = [];
   otherColors.sort(() => Math.random() - 0.5).slice(0, 2).forEach(c => {
     let wrongList = ITEMS_MAP[c.name];
-    // Берем случайную картинку из списка неправильного цвета
-    wrongChoices.push(wrongList[Math.floor(Math.random() * wrongList.length)]);
+    wrongChoices.push({ color: c.name, file: wrongList[Math.floor(Math.random() * wrongList.length)] });
   });
 
-  // Собираем всё вместе
   let pool = [];
-  correctChoices.forEach(item => pool.push({ color: currentColor.name, itemData: item }));
-  wrongChoices.forEach((item, idx) => pool.push({ color: otherColors[idx].name, itemData: item }));
+  correctChoices.forEach(file => pool.push({ color: currentColor.name, file: file }));
+  wrongChoices.forEach(item => pool.push({ color: item.color, file: item.file }));
   
   pool.sort(() => Math.random() - 0.5);
 
   pool.forEach(data => {
     const div = document.createElement('div');
     div.className = 'item';
+    div.dataset.color = data.color;
     
     const img = document.createElement('img');
-    img.src = `images/${data.itemData.file}`;
-    img.alt = data.itemData.fallback;
+    img.src = `images/${data.file}`;
     img.className = 'item-img';
     
-    img.onerror = function() {
-      this.style.display = 'none';
-      const span = document.createElement('span');
-      span.textContent = data.itemData.fallback;
-      span.className = 'item-fallback';
-      div.appendChild(span);
-    };
-    
     div.appendChild(img);
-    div.dataset.color = data.color;
     div.addEventListener('click', () => handleItemClick(div));
     itemsEl.appendChild(div);
   });
@@ -234,44 +176,89 @@ function endRound() {
 newColorRound();
 
 // ======================
-// 2. ЖИВОТНЫЕ
+// 2. ЖИВОТНЫЕ (ТВОИ ФОТО)
 // ======================
 const ANIMALS = [
-  { id: 'cat',   emoji: '🐱', name: 'Кошка',  sound: 'Мяу!' },
-  { id: 'dog',   emoji: '🐶', name: 'Собака', sound: 'Гав!' },
-  { id: 'cow',   emoji: '🐮', name: 'Корова', sound: 'Муу!' },
-  { id: 'sheep', emoji: '🐑', name: 'Овца',   sound: 'Бее!' },
-  { id: 'horse', emoji: '🐴', name: 'Лошадь', sound: 'Иго-го!' },
-  { id: 'duck',  emoji: '🦆', name: 'Утка',   sound: 'Кря!' },
+  { id: 'cat',      name: 'Кошка' },
+  { id: 'dog',      name: 'Собака' },
+  { id: 'cow',      name: 'Корова' },
+  { id: 'sheep',    name: 'Овца' },
+  { id: 'horse',    name: 'Лошадь' },
+  { id: 'duck',     name: 'Утка' },
+  { id: 'pig',      name: 'Свинья' },
+  { id: 'lion',     name: 'Лев' },
+  { id: 'elephant', name: 'Слон' },
+  { id: 'rooster',  name: 'Петух' },
+  { id: 'chicken',  name: 'Курица' },
+  { id: 'frog',     name: 'Лягушка' }
 ];
 
 const animalsGrid = document.getElementById('animals-grid');
 const animalOverlay = document.getElementById('animal-overlay');
-const animalBig = document.getElementById('animal-big');
+const animalBigImg = document.getElementById('animal-big-img');
+const animalBigTitle = document.getElementById('animal-big-title');
+let currentAudio = null; 
 
 ANIMALS.forEach(a => {
   const card = document.createElement('div');
   card.className = 'animal-card';
-  card.innerHTML = `${a.emoji}<span>${a.name}</span>`;
+  
+  const img = document.createElement('img');
+  // Ищем .jpg, если не находим — .png
+  img.src = `animals/${a.id}.jpg`; 
+  img.alt = a.name;
+  img.className = 'animal-card-img';
+  img.onerror = function() {
+    if (this.src.endsWith('.jpg')) {
+      this.src = `animals/${a.id}.png`;
+    } else {
+      this.style.display = 'none'; // Если фото вообще нет
+    }
+  };
+  
+  const title = document.createElement('span');
+  title.textContent = a.name;
+  
+  card.appendChild(img);
+  card.appendChild(title);
   card.addEventListener('click', () => showAnimal(a));
   animalsGrid.appendChild(card);
 });
 
 function showAnimal(a) {
-  animalBig.textContent = a.emoji;
+  animalBigImg.src = `animals/${a.id}.jpg`;
+  animalBigImg.onerror = function() {
+    if (this.src.endsWith('.jpg')) {
+      this.src = `animals/${a.id}.png`;
+    }
+  };
+  animalBigTitle.textContent = a.name;
+  
   animalOverlay.classList.remove('hidden');
-  if ('speechSynthesis' in window) {
-    const u = new SpeechSynthesisUtterance(`${a.sound} ${a.name}`);
-    u.lang = 'ru-RU';
-    u.rate = 0.9;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
+
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
   }
+  
+  currentAudio = new Audio(`sounds/${a.id}.mp3`);
+  
+  currentAudio.addEventListener('playing', () => {
+    setTimeout(() => {
+      if (currentAudio && !currentAudio.paused) {
+        currentAudio.pause();
+      }
+    }, 2500);
+  });
+
+  currentAudio.play().catch(e => console.log('Звук не найден'));
 }
 
 document.getElementById('animal-back').addEventListener('click', () => {
   animalOverlay.classList.add('hidden');
-  speechSynthesis.cancel();
+  if (currentAudio) {
+    currentAudio.pause();
+  }
 });
 
 // ======================

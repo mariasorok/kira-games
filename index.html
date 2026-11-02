@@ -2,16 +2,15 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Игры Киры</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Экран приложения -->
   <main id="app">
 
-    <!-- Вкладка 1: Цвета (сортер) -->
+    <!-- Вкладка 1: Цвета -->
     <section id="screen-colors" class="screen active">
       <div class="basket-area">
         <div id="basket" class="basket"></div>
@@ -22,8 +21,10 @@
     <!-- Вкладка 2: Животные -->
     <section id="screen-animals" class="screen">
       <div id="animals-grid" class="animals-grid"></div>
+      
       <div id="animal-overlay" class="animal-overlay hidden">
-        <div id="animal-big" class="animal-big"></div>
+        <img id="animal-big-img" class="animal-big-img" src="" alt="" />
+        <div id="animal-big-title" class="animal-big-title"></div>
         <button id="animal-back" class="back-btn">←</button>
       </div>
     </section>
@@ -41,14 +42,12 @@
 
   </main>
 
-  <!-- Нижние вкладки -->
   <nav class="tabs">
     <button class="tab active" data-screen="colors">🎨<span>Цвета</span></button>
     <button class="tab" data-screen="animals">🐾<span>Животные</span></button>
     <button class="tab" data-screen="draw">✏️<span>Рисование</span></button>
   </nav>
 
-  <!-- Звук "дзынь" через Web Audio (без файлов) -->
   <script src="script.js"></script>
 </body>
 </html>

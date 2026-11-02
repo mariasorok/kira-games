@@ -6,6 +6,13 @@
   user-select: none;
 }
 
+body {
+  overscroll-behavior: none; /* Запрещает "оттягивание" страницы вниз/вверх */
+  touch-action: pan-x pan-y; /* Запрещает зум двумя пальцами */
+  user-select: none; /* Запрещает выделение текста */
+  -webkit-user-select: none;
+}
+
 html, body {
   height: 100%;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -48,7 +55,7 @@ html, body {
   padding: 20px;
 }
 .basket {
-  width: 240px; /* Увеличили круг */
+  width: 240px;
   height: 240px;
   border-radius: 50%;
   border: none;
@@ -58,7 +65,7 @@ html, body {
 @keyframes bounce { 0% { transform: scale(1); } 40% { transform: scale(1.15); } 100% { transform: scale(1); } }
 
 .items-row {
-  height: 320px; /* Даем больше места для больших карточек */
+  height: 320px; 
   display: flex; 
   align-items: center; 
   justify-content: center;
@@ -67,9 +74,8 @@ html, body {
   padding: 10px;
 }
 
-/* СТИЛИ ДЛЯ ПРЕДМЕТОВ */
 .item {
-  width: 140px; /* ОГРОМНЫЕ КАРТОЧКИ */
+  width: 140px; 
   height: 140px; 
   cursor: pointer; 
   transition: transform 0.15s;
@@ -82,18 +88,11 @@ html, body {
   box-shadow: 0 6px 12px rgba(0,0,0,0.1); 
 }
 
-/* Картинка внутри предмета */
 .item-img {
   width: 100%;
   height: 100%;
   object-fit: contain; 
   pointer-events: none; 
-}
-
-/* Запасной эмодзи */
-.item-fallback {
-  font-size: 85px;
-  pointer-events: none;
 }
 
 .item:active { transform: scale(0.9); }
@@ -108,28 +107,86 @@ html, body {
 
 /* ---------- ЖИВОТНЫЕ ---------- */
 .animals-grid {
-  flex: 1; display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 14px; padding: 14px; overflow-y: auto;
+  flex: 1; 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); /* На компьютере 3 колонки */
+  gap: 16px; 
+  padding: 16px; 
+  overflow-y: auto;
+  align-content: start; /* Прижимаем к верху */
 }
+
+/* На телефоне/планшете будет 2 колонки */
+@media (max-width: 900px) {
+  .animals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .animal-card {
-  background: #fff; border-radius: 24px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; font-size: 70px;
-  box-shadow: 0 6px 0 rgba(0,0,0,0.1); cursor: pointer;
-  transition: transform 0.1s; padding: 10px;
+  background: #fff; 
+  border-radius: 24px; 
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s; 
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  padding: 12px;
+  height: 200px; /* ЖЕСТКАЯ ВЫСОТА КАРТОЧКИ */
 }
-.animal-card span { font-size: 18px; font-weight: 700; color: #444; margin-top: 4px; }
 .animal-card:active { transform: scale(0.95); }
+
+/* КАРТИНКА */
+.animal-card-img {
+  width: 100%;
+  height: 130px; /* Высота фото внутри карточки */
+  object-fit: contain; /* Фото вписывается ЦЕЛИКОМ, без обрезки */
+}
+
+/* ТЕКСТ */
+.animal-card span { 
+  font-size: 20px; 
+  font-weight: 800; 
+  color: #333; 
+  margin-top: 8px; 
+  text-align: center;
+}
+
 .animal-overlay {
-  position: absolute; inset: 0; background: #fffbe6; display: flex;
-  align-items: center; justify-content: center; z-index: 10;
+  position: absolute; inset: 0; 
+  background: #fffbe6; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; justify-content: center; 
+  z-index: 10;
 }
 .animal-overlay.hidden { display: none; }
-.animal-big { font-size: 220px; animation: pop 0.4s; }
-@keyframes pop { 0% { transform: scale(0.3); } 70% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+.animal-big-img {
+  width: 100%;
+  max-width: 400px;
+  height: 60vh;
+  object-fit: contain; 
+  background-color: #fff;
+  border-radius: 30px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.animal-big-title {
+  font-size: 40px;
+  font-weight: 900;
+  color: #333;
+  margin-top: 20px;
+}
+
 .back-btn {
   position: absolute; top: 20px; left: 20px; width: 64px; height: 64px;
   border-radius: 50%; border: none; background: #ffd54f; font-size: 30px;
   font-weight: 700; cursor: pointer; box-shadow: 0 4px 0 #e0a800;
+  z-index: 20;
 }
 
 /* ---------- РИСОВАНИЕ ---------- */
