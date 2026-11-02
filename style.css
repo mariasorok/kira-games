@@ -1,0 +1,152 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+html, body {
+  height: 100%;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  overflow: hidden;
+  background: #fdf6e3;
+}
+
+#app {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  bottom: 90px;
+  overflow: hidden;
+}
+
+/* ---------- Экраны ---------- */
+.screen { position: absolute; inset: 0; display: none; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ---------- Нижние вкладки ---------- */
+.tabs {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 90px;
+  display: flex; background: #fff; border-top: 4px solid #eee;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+}
+.tab {
+  flex: 1; border: none; background: transparent; font-size: 34px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; color: #888; cursor: pointer; transition: transform 0.1s;
+}
+.tab span { font-size: 13px; font-weight: 600; }
+.tab.active { color: #e91e63; background: #fff0f6; }
+.tab:active { transform: scale(0.92); }
+
+/* ---------- ЦВЕТА ---------- */
+.basket-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.basket {
+  width: 240px; /* Увеличили круг */
+  height: 240px;
+  border-radius: 50%;
+  border: none;
+  transition: transform 0.2s, background 0.3s;
+}
+.basket.bounce { animation: bounce 0.4s; }
+@keyframes bounce { 0% { transform: scale(1); } 40% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+.items-row {
+  height: 320px; /* Даем больше места для больших карточек */
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 20px; 
+  flex-wrap: wrap; 
+  padding: 10px;
+}
+
+/* СТИЛИ ДЛЯ ПРЕДМЕТОВ */
+.item {
+  width: 140px; /* ОГРОМНЫЕ КАРТОЧКИ */
+  height: 140px; 
+  cursor: pointer; 
+  transition: transform 0.15s;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  background-color: #fff; 
+  border-radius: 24px; 
+  padding: 10px; 
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1); 
+}
+
+/* Картинка внутри предмета */
+.item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+  pointer-events: none; 
+}
+
+/* Запасной эмодзи */
+.item-fallback {
+  font-size: 85px;
+  pointer-events: none;
+}
+
+.item:active { transform: scale(0.9); }
+.item.shake { animation: shake 0.4s; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-8px) rotate(-6deg); }
+  75% { transform: translateX(8px) rotate(6deg); }
+}
+.item.fly { animation: fly 0.5s forwards; }
+@keyframes fly { to { transform: scale(0.1) translateY(-300px); opacity: 0; } }
+
+/* ---------- ЖИВОТНЫЕ ---------- */
+.animals-grid {
+  flex: 1; display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 14px; padding: 14px; overflow-y: auto;
+}
+.animal-card {
+  background: #fff; border-radius: 24px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; font-size: 70px;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.1); cursor: pointer;
+  transition: transform 0.1s; padding: 10px;
+}
+.animal-card span { font-size: 18px; font-weight: 700; color: #444; margin-top: 4px; }
+.animal-card:active { transform: scale(0.95); }
+.animal-overlay {
+  position: absolute; inset: 0; background: #fffbe6; display: flex;
+  align-items: center; justify-content: center; z-index: 10;
+}
+.animal-overlay.hidden { display: none; }
+.animal-big { font-size: 220px; animation: pop 0.4s; }
+@keyframes pop { 0% { transform: scale(0.3); } 70% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.back-btn {
+  position: absolute; top: 20px; left: 20px; width: 64px; height: 64px;
+  border-radius: 50%; border: none; background: #ffd54f; font-size: 30px;
+  font-weight: 700; cursor: pointer; box-shadow: 0 4px 0 #e0a800;
+}
+
+/* ---------- РИСОВАНИЕ ---------- */
+#screen-draw { background: #fff; }
+#canvas { flex: 1; width: 100%; touch-action: none; }
+.draw-toolbar {
+  display: flex; align-items: center; gap: 10px; padding: 10px;
+  background: #f5f5f5; border-top: 2px solid #e0e0e0;
+}
+.palette { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; }
+.color-dot {
+  width: 46px; height: 46px; border-radius: 50%; border: 4px solid transparent;
+  cursor: pointer; transition: transform 0.1s, border-color 0.1s;
+}
+.color-dot.active { border-color: #333; transform: scale(1.15); }
+.tool-btn {
+  width: 52px; height: 52px; border-radius: 14px; border: none;
+  background: #fff; font-size: 26px; cursor: pointer; box-shadow: 0 3px 0 #ccc;
+}
+.tool-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #ccc; }

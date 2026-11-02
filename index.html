@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Игры Киры</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Экран приложения -->
+  <main id="app">
+
+    <!-- Вкладка 1: Цвета (сортер) -->
+    <section id="screen-colors" class="screen active">
+      <div class="basket-area">
+        <div id="basket" class="basket"></div>
+      </div>
+      <div id="items" class="items-row"></div>
+    </section>
+
+    <!-- Вкладка 2: Животные -->
+    <section id="screen-animals" class="screen">
+      <div id="animals-grid" class="animals-grid"></div>
+      <div id="animal-overlay" class="animal-overlay hidden">
+        <div id="animal-big" class="animal-big"></div>
+        <button id="animal-back" class="back-btn">←</button>
+      </div>
+    </section>
+
+    <!-- Вкладка 3: Рисование -->
+    <section id="screen-draw" class="screen">
+      <canvas id="canvas"></canvas>
+      <div class="draw-toolbar">
+        <div id="palette" class="palette"></div>
+        <button id="erase-btn" class="tool-btn">🧽</button>
+        <button id="clear-btn" class="tool-btn">🗑️</button>
+        <button id="save-btn" class="tool-btn">💾</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Нижние вкладки -->
+  <nav class="tabs">
+    <button class="tab active" data-screen="colors">🎨<span>Цвета</span></button>
+    <button class="tab" data-screen="animals">🐾<span>Животные</span></button>
+    <button class="tab" data-screen="draw">✏️<span>Рисование</span></button>
+  </nav>
+
+  <!-- Звук "дзынь" через Web Audio (без файлов) -->
+  <script src="script.js"></script>
+</body>
+</html>
